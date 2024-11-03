@@ -17,11 +17,9 @@ void main() {
     vec3 blurredColor = vec3(0,0,0);
     if(depth < 0.9999f) {
         blurredColor = texture2D(colortex4, outTexCoord).rgb;
-        color = color + (color - blurredColor) * 0.6f;        
+        color = color + (color - blurredColor) * 0.2f;        
     }
     
     /* DRAWBUFFERS:0 */
     gl_FragData[0] = vec4(color, 1.0f);
-    //gl_FragData[0] = vec4(blurredColor, 1.0f);
-
 }
