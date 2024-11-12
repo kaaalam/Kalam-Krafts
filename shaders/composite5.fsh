@@ -32,7 +32,7 @@ void main() {
 
 
     vec3 color = texture2D(colortex0, outTexCoord).rgb;
-    color = mix(color, blurredHighlights.rgb, 0.2);
+    color = mix(color, blurredHighlights.rgb, 0.5);
 
     /* DRAWBUFFERS:0*/
     gl_FragData[0] = vec4(color, 1.0);

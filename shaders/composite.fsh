@@ -19,9 +19,9 @@ uniform mat4 gbufferModelViewInverse;
 uniform mat4 shadowModelView;
 uniform mat4 shadowProjection;
 /*
-const int colortex0Format = RGB16;
-const int colortex1Format = RGB16;
-const int colortex2Format = RGB16;
+const int colortex0Format = RGBA32F;
+const int colortex1Format = RGBA32F;
+const int colortex2Format = RGBA32F;
 */
 
 //sun's direction
