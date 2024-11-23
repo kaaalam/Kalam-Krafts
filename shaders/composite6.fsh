@@ -17,13 +17,16 @@ varying vec2 outTexCoord;
 
 void main() {
     vec3 color = texture2D(colortex0, outTexCoord).rgb;
-    float mask = 1 - texture2D(colortex2, outTexCoord).r;
+    float torchMask = 1 - texture2D(colortex2, outTexCoord).r;
     float depth = texture2D(depthtex0, outTexCoord).r;
     depth = LinearDepth(depth, near, far);
     float viewDistance = (depth * far) - near;
-    float fogFactor = 1 - clamp(FogFactorExponential(viewDistance), 0.0,1.0);
-    fogFactor *= mask;
+    float density = 0.01;
+    float fogFactor = FogFactorExponential(viewDistance, density);
+    fogFactor = 1 - clamp(fogFactor, 0.0,1.0);
+    fogFactor *= torchMask;
     vec3 fogColor = vec3(0.82f, 0.83f, 0.9f);
+    fogColor *= mix(1.0f, 0.2f, rainStrength);
     vec3 fogged = mix(color, fogColor, fogFactor);
     /* DRAWBUFFERS:0*/
     gl_FragData[0] = vec4(fogged, 1.0);

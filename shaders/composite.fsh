@@ -44,7 +44,7 @@ void main()
     }
 
     //apply gamma correction to convert to linear. all lighting operations need to be done in linear space.
-    vec3 gamma2Linear = pow(sampledColorInGamma, vec3(2.2f));
+    vec3 gamma2Linear = pow(sampledColorInGamma, vec3(1.9f));
     //read lightmap
    
     vec2 lightMap = texture2D(colortex2, outTexCoord).rg;
