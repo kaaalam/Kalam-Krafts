@@ -5,6 +5,8 @@ varying vec2 outTexCoord;
 
 uniform sampler2D colortex0;
 uniform sampler2D colortex5;
+uniform sampler2D depthtex0;
+
 uniform float viewWidth;
 uniform float viewHeight;
 /*
@@ -15,6 +17,12 @@ const int colortex5Format = RGBA32F;
 vec2 texelSize = vec2(1.0/viewWidth, 1.0/viewHeight);
 
 void main() {
+    float depth = texture2D(depthtex0, outTexCoord).r;
+     if(depth == 1.0){
+        vec3 color = texture2D(colortex0, outTexCoord).rgb;
+        gl_FragData[0] = vec4(color, 1.0);
+        return;
+    }
     vec4 blurredHighlights = vec4(0.0f,0.0f,0.0f,0.0f);
     int i,j;
     int kernelSize = 7;
@@ -32,7 +40,7 @@ void main() {
 
 
     vec3 color = texture2D(colortex0, outTexCoord).rgb;
-    color = mix(color, blurredHighlights.rgb, 0.5);
+    color = mix(color, blurredHighlights.rgb, 0.4);
 
     /* DRAWBUFFERS:0*/
     gl_FragData[0] = vec4(color, 1.0);

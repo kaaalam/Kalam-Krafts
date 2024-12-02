@@ -44,7 +44,7 @@ void main()
     }
 
     //apply gamma correction to convert to linear. all lighting operations need to be done in linear space.
-    vec3 gamma2Linear = pow(sampledColorInGamma, vec3(1.9f));
+    vec3 gamma2Linear = pow(sampledColorInGamma, vec3(1.85f));
     //read lightmap
    
     vec2 lightMap = texture2D(colortex2, outTexCoord).rg;
@@ -63,7 +63,7 @@ void main()
     
     //do diffuse lighting calculations
     vec3 shadowValue = ComputeShadow(depthValue, outTexCoord, gbufferProjectionInverse, gbufferModelViewInverse, shadowModelView, shadowProjection, shadowtex0, shadowtex1, shadowcolor0);
-    vec3 lighting = adjustedLightMapColor + NdotSun * shadowValue + ambientLightingOffset;
+    vec3 lighting = adjustedLightMapColor + NdotSun * shadowValue + ambientLightingOffset + 0.15;
     vec3 colorAfterDiffuse = gamma2Linear * lighting; 
     /* DRAWBUFFERS:0 */
     gl_FragData[0] = vec4(colorAfterDiffuse, 1.0f);

@@ -21,7 +21,7 @@ vec3 ApplyTonemap(vec3 color)
 void main() {
    vec3 color = texture2D(colortex0, outTexCoord).rgb;
     //apply inverse gamma correction to get back to gamma space
-   color = pow(color, vec3(1.0/1.9f));
+   color = pow(color, vec3(1.0/1.85f));
    color = ApplyTonemap(color);
    gl_FragColor = vec4(color, 1.0f);
 }

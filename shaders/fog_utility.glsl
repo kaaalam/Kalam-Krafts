@@ -6,6 +6,5 @@ float LinearDepth(float depth, float near, float far) {
 }
 
 float FogFactorExponential(float viewDistance, float density) {
-    float factor = viewDistance * (density / log(2.0f));
-    return exp2(-factor);
+    return 0.05 + exp(-density * (1.0 - viewDistance));
 }

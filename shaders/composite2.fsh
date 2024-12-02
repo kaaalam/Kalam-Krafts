@@ -13,8 +13,9 @@ const int colortex0Format = RGBA32F;
 */
 
 
-void main() {
-   
+void main() 
+{
+    /*
     vec4 blurredResult = vec4(0.0f,0.0f,0.0f,0.0f);
     int i,j;
     int kernelSize = 3;
@@ -28,23 +29,9 @@ void main() {
         }
     }
     blurredResult/= gaussianWeightSum;
-
-
-    /*
-    //box blur: not used, but keeping it in for now for benchmarking
-    vec4 blurredResult = vec4(0.0f,0.0f,0.0f,0.0f);
-    int i,j;
-    int kernelSize = 5; 
-    for(i = 0; i < kernelSize; i++) {
-        for(j = 0; j < kernelSize; j++) {
-            vec2 offset = vec2(i, j) * texelSize.xy;
-            blurredResult += texture2D(colortex0, outTexCoord+offset.xy);
-        }
-    }
-    kernelSize = (i+1)*(j+1);
-    blurredResult/= kernelSize;
     */
 
+    //here, we are just performing a gaussian blur and write it out to DB 4
     /* DRAWBUFFERS:4*/
-    gl_FragData[0] = blurredResult;
+    //gl_FragData[0] = blurredResult;
 }
