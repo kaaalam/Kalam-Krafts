@@ -9,7 +9,6 @@ uniform sampler2D texture;
 void main()
 {
     vec4 color = texture2D(texture, outTexCoord) * color; //we need to multiply by the color because the terrain is stored as grayscale
-    //below, what happens if we do drawbuffers 0 instead?
     /* DRAWBUFFERS:012 */
     gl_FragData[0] = color;
     gl_FragData[1] = vec4(normalize(normal), 1.0f);

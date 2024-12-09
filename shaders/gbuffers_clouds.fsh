@@ -13,7 +13,7 @@ void main()
       //  albedo.rgb = pow(albedo.rgb, vec3(2.2));
     //albedo.a *= 1 - rainStrength;
     
-    /* DRAWBUFFERS:2*/
-    //gl_FragData[0] = albedo;
+    /* DRAWBUFFERS:02*/
+    gl_FragData[0] = albedo;
     gl_FragData[1] = vec4(1.0f - CalculateLuminance(albedo.rgb));
 }
