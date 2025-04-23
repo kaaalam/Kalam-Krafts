@@ -7,6 +7,7 @@ uniform sampler2D depthtex0;
 uniform float near;
 uniform float far; 
 uniform float rainStrength;
+uniform float sunAngle;
 uniform mat4 gbufferProjectionInverse;
 
 /*
@@ -44,7 +45,13 @@ void main() {
     vec4 worldSpace =  gbufferProjectionInverse * vec4(clipSpace,1.0f);
     vec3 viewSpace = worldSpace.xyz / worldSpace.w;
     float distance = length(viewSpace) / far;
-    float fogFactor = FogFactorExponential(distance, 10.0);
+    float fogFactor = 0.0;
+    if(sunAngle > 0.0 && sunAngle < 0.5) {
+        fogFactor = FogFactorExponential(distance, 5.0);
+    }else {
+        fogFactor = clamp(FogFactorExponential(distance, 15.0) - 0.05, 0.0, 0.1);
+    }
+    
     fogFactor *= torchMask;
     vec3 fogColor = vec3(0.82f, 0.83f, 0.9f);
     vec3 fogged = mix(color.rgb, fogColor, clamp(fogFactor, 0.0,1.0));

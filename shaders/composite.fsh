@@ -26,8 +26,10 @@ const int colortex2Format = RGBA32F;
 
 //sun's direction
 uniform vec3 skyColor; 
-uniform vec3 sunPosition;
+uniform vec3 shadowLightPosition;
+uniform float sunAngle;
 const vec3 sunColor = vec3(0.98f, 0.73f, 0.15f);
+const vec3 moonColor = vec3(0.929, 0.925, 0.961);
 const vec3 ambientLightingOffset = vec3(0.015f, 0.03f, 0.06f);
 
 
@@ -54,16 +56,23 @@ void main()
     //get the normal where we wrote it to in our gbuffers_terrain
     vec3 normal = texture2D(colortex1, outTexCoord).rgb;
     //calculate the dot product of the normal and the sun path rotation. gives us a value indicating how much sunlight is hitting an object
-    vec3 NdotSun = sunColor * clamp(dot(normal, (sunPosition * 0.01f)), 0.0f, 1.0f); //normalized the sunPosition
-    NdotSun *= 1.8f;
-    float skyLuminance = CalculateLuminance(sunColor);
-    NdotSun *= (skyLuminance + 0.01f);
-    NdotSun *= lightMap.g;
+    vec3 NdotCelestialBody;
+    if(sunAngle <= 0.5) {
+        NdotCelestialBody = sunColor * clamp(dot(normal, (shadowLightPosition * 0.01f)), 0.0f, 1.0f); //normalized the sunPosition
+        NdotCelestialBody *= 1.8f;
+        float skyLuminance = CalculateLuminance(sunColor);
+        NdotCelestialBody *= (skyLuminance + 0.01f);
+        NdotCelestialBody *= lightMap.g;
+    }else {
+        NdotCelestialBody = moonColor * clamp(dot(normal, (shadowLightPosition * 0.01f)), 0.0f, 0.25f); //normalized the sunPosition
+    }
+   
+
 
     
     //do diffuse lighting calculations
     vec3 shadowValue = ComputeShadow(depthValue, outTexCoord, gbufferProjectionInverse, gbufferModelViewInverse, shadowModelView, shadowProjection, shadowtex0, shadowtex1, shadowcolor0);
-    vec3 lighting = adjustedLightMapColor + NdotSun * shadowValue + ambientLightingOffset + 0.15;
+    vec3 lighting = adjustedLightMapColor + NdotCelestialBody * shadowValue + ambientLightingOffset + 0.15;
     vec3 colorAfterDiffuse = gamma2Linear * lighting; 
     /* DRAWBUFFERS:0 */
     gl_FragData[0] = vec4(colorAfterDiffuse, 1.0f);

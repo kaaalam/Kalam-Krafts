@@ -9,11 +9,15 @@ uniform float rainStrength;
 void main() 
 {
     vec4 albedo = texture2D(texture, outTexCoord)*color;
-     //if (CalculateLuminance(albedo.rgb) <= 0.9)
-      //  albedo.rgb = pow(albedo.rgb, vec3(2.2));
-    //albedo.a *= 1 - rainStrength;
+     if (CalculateLuminance(albedo.rgb) <= 0.9)
+        albedo.rgb = pow(albedo.rgb, vec3(2.2));
+    albedo.a *= 1 - rainStrength;
     
     /* DRAWBUFFERS:02*/
     gl_FragData[0] = albedo;
-    gl_FragData[1] = vec4(1.0f - CalculateLuminance(albedo.rgb));
+    vec4 cloudColor = vec4(1.0, 0.725, 0.957, 1.0);
+    vec4 white = vec4(1.0,1.0,1.0,1.0);
+    vec4 newCloudColor = mix(white, cloudColor, 0.95);
+    gl_FragData[0] = cloudColor;
+    //gl_FragData[1] = vec4(1.0f - CalculateLuminance(albedo.rgb));
 }
